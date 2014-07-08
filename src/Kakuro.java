@@ -145,7 +145,8 @@ public class Kakuro {
 			
 			if (nodo.isSentinel()){
 				//Fallimento! ho fatto backtraking ma non esiste nessun altro valore possibile
-				System.out.println("FALLIMENTO!");
+				System.out.println("FALLIMENTO! Il problema non è risolvibile");
+				System.exit(1);
 				
 			}
 			else{
