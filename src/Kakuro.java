@@ -277,13 +277,18 @@ public class Kakuro {
 		for (int i=1;i<8;i++) {
 			for (int j=1;j<8;j++) {
 				if (matrice[j][i].isWhite()){
+					
+					//if (bottom==A || bottom==B) //calcolo la priorità solo con bottone statico e dinamico
 					matrice[j][i].calcPriorita(true);
+					
 					celleBianche.add( (Bianca) matrice[j][i]);
 				}
 			}
 		}
 				
+		//if (bottom==A || bottom==B) //ordino il vettore solo con bottone statico e dinamico
 		Collections.sort(celleBianche, new MyComparator());
+		
 		Iterator<Bianca> iter = celleBianche.iterator();
 		
 		
@@ -310,6 +315,10 @@ public class Kakuro {
 		
 		
 		//per ogni cella bianca
+		
+		//if (bottom==c || bottom==A) //senza priorita  o priorita statica
+
+		
 		/*
 		while (iter.hasNext()) {
 			albero.addFirst(new Nodo(iter.next()));
