@@ -119,7 +119,7 @@ public class Nodo {
 	System.out.println("numero celle x " + num_cellex+" numero celle y "+num_celley);
 	}
 
-	public void riduci_val_vincolo(){
+	public void riduci_val_vincoli(){
 		valorevincolox=valorevincolox-valore_cella;
 		valorevincoloy=valorevincoloy-valore_cella;
 		
@@ -132,7 +132,7 @@ public class Nodo {
 
 	}
 	
-	public void riduzione_dominio() {
+	public void riduzione_domini() {
 		// TODO Auto-generated method stub
 		
 		boolean vinc_vert=true;
@@ -700,7 +700,7 @@ public class Nodo {
 			valori_scartatiy.removeAll(valori_scartatiy);
 	}
 
-	public boolean assegno_val_maggiore(){
+	public boolean assegnaValoreSuccessivo(){
 		//ritorna sottoinsieme strettamente maggiore al valore cella
 		 SortedSet<Integer> temp=new TreeSet<Integer>();
 		 int temp1;

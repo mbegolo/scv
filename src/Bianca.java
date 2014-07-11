@@ -82,7 +82,7 @@ public class Bianca extends Cella {
 		return priorita;
 	}
 	
-	public void riduzione_dominio() {
+	public void riduzione_domini() {
 		// TODO Auto-generated method stub
 		Vincolo vincolo_oriz;
 		Vincolo vincolo_vert;
