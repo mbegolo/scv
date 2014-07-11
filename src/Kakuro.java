@@ -7,25 +7,28 @@ import java.util.ListIterator;
 
 
 public class Kakuro {		
-	private Cella[][] matrice;
-	private ArrayList<Bianca> celleBianche;
-	private Iterator<Bianca> iter;
-	private LinkedList<Nodo> albero;
-	private ListIterator <Nodo> listIter;
-	private Nodo nodo = null;
-	private Grafica g;
+	 
+	private static ArrayList<Bianca> celleBianche;
+	private static LinkedList<Nodo> albero;
+	private static Cella[][] matrice;
+	private static ListIterator <Nodo> listIter;
+	private static Nodo nodo = null;
+		
 	
-	private void iniz_matrice(){
+	private static void iniz_matrice(){
+			
+			int i,j;
+			
 			matrice = new Cella[8][8];
-			for (int i=0;i<8;i++) {
-				for (int j=0;j<8;j++) {
+			
+			for (i=0;i<8;i++) {
+				for (j=0;j<8;j++) {
 					matrice[i][j] = new Bianca(matrice,i,j);
 				}
 				matrice [i][0] = new Nera(matrice,i,0);
 				matrice [0][i] = new Nera(matrice,0,i);
 			}
 			
-			// Setto le caselle nere
 			matrice[3][1]=new Nera(matrice,3,1);
 			matrice[4][1]=new Nera(matrice,4,1);
 			matrice[3][2]=new Nera(matrice,3,2);
@@ -40,7 +43,55 @@ public class Kakuro {
 			matrice[4][7]=new Nera(matrice,4,7);
 			matrice[5][7]=new Nera(matrice,5,7);
 			
-			// Imposto vincoli Verticali
+			iniz_vincoli();
+					
+		
+		} 
+		
+	private static void iniz_matrice1(){
+			
+			int i,j;
+			
+			matrice = new Cella[8][8];
+			
+			for (i=0;i<8;i++) {
+				for (j=0;j<8;j++) {
+					matrice[i][j] = new Nera(matrice,i,j);
+				}
+			}
+			
+			
+			
+			
+			
+			matrice[3][1]=new Bianca(matrice,3,1);
+			matrice[4][1]=new Bianca(matrice,4,1);
+			
+			matrice[1][2]=new Bianca(matrice,1,2);
+			matrice[2][2]=new Bianca(matrice,2,2);
+			matrice[3][2]=new Bianca(matrice,3,2);
+			matrice[4][2]=new Bianca(matrice,4,2);
+			
+			matrice[1][3]=new Bianca(matrice,1,3);
+			matrice[2][3]=new Bianca(matrice,2,3);
+				
+			
+			
+			
+			matrice[3][0].setVincoloVert(new Vincolo(3));
+			matrice[4][0].setVincoloVert(new Vincolo(4));
+			matrice[1][1].setVincoloVert(new Vincolo(6));
+			matrice[2][1].setVincoloVert(new Vincolo(3));
+					
+			
+			matrice[2][1].setVincoloOriz(new Vincolo(3));
+			matrice[0][2].setVincoloOriz(new Vincolo(10));
+			matrice[0][3].setVincoloOriz(new Vincolo(3));
+		
+		} 
+			
+	private static void iniz_vincoli() {
+			// Verticali
 			matrice[1][0].setVincoloVert(new Vincolo(23));
 			matrice[2][0].setVincoloVert(new Vincolo(30));
 			matrice[5][0].setVincoloVert(new Vincolo(27));
@@ -54,7 +105,7 @@ public class Kakuro {
 			matrice[1][5].setVincoloVert(new Vincolo(11));
 			matrice[2][5].setVincoloVert(new Vincolo(10));
 			
-			// Imposto vincoli Orizzontali
+			// Orizzontali
 			matrice[0][1].setVincoloOriz(new Vincolo(16));
 			matrice[4][1].setVincoloOriz(new Vincolo(24));
 			matrice[0][2].setVincoloOriz(new Vincolo(17));
@@ -67,38 +118,8 @@ public class Kakuro {
 			matrice[5][6].setVincoloOriz(new Vincolo(5));
 			matrice[0][7].setVincoloOriz(new Vincolo(6));
 			matrice[5][7].setVincoloOriz(new Vincolo(3));
-		} 
-		
-	private void iniz_matrice1(){
-			matrice = new Cella[8][8];
-			for (int i=0;i<8;i++) {
-				for (int j=0;j<8;j++) {
-					matrice[i][j] = new Nera(matrice,i,j);
-				}
-			}
-			
-			// Setto le caselle nere
-			matrice[3][1]=new Bianca(matrice,3,1);
-			matrice[4][1]=new Bianca(matrice,4,1);
-			matrice[1][2]=new Bianca(matrice,1,2);
-			matrice[2][2]=new Bianca(matrice,2,2);
-			matrice[3][2]=new Bianca(matrice,3,2);
-			matrice[4][2]=new Bianca(matrice,4,2);
-			matrice[1][3]=new Bianca(matrice,1,3);
-			matrice[2][3]=new Bianca(matrice,2,3);
-				
-			// Imposto vincoli Verticali
-			matrice[3][0].setVincoloVert(new Vincolo(3));
-			matrice[4][0].setVincoloVert(new Vincolo(4));
-			matrice[1][1].setVincoloVert(new Vincolo(6));
-			matrice[2][1].setVincoloVert(new Vincolo(3));
-					
-			// Imposto vincoli Orizzontali
-			matrice[2][1].setVincoloOriz(new Vincolo(3));
-			matrice[0][2].setVincoloOriz(new Vincolo(10));
-			matrice[0][3].setVincoloOriz(new Vincolo(3));
-		} 
 	
+		}
 	
 	static class  MyComparator implements Comparator<Bianca> {
 		public int compare(Bianca o1, Bianca o2) {
@@ -113,155 +134,240 @@ public class Kakuro {
 		}
 	}
 		
-	void risali(){
-		System.out.println("Inizia Backtracking");
-		//nodo precedente
-		nodo=listIter.next();
-		System.out.println("Elaboro cella ("+ nodo.get_cord_x()+","+ nodo.get_cord_y()+")");
-		if (nodo.isSentinel()){
-			// Sono tornato alla radice, quindi nessun altro valore � possibile, quindi
-			// il problema non � risolvibile
-			System.out.println("FALLIMENTO! Il problema non � risolvibile");
+	static void risali(){
+	
+			System.out.println("INIZIA BACKWARD");
+			
+			//nodo precedente
+			nodo=listIter.next();
+			
+			System.out.println("CORDINATE "+ nodo.get_cord_x()+" "+ nodo.get_cord_y());
+			
+			if (nodo.isSentinel()){
+				//Fallimento! ho fatto backtraking ma non esiste nessun altro valore possibile
+				System.out.println("FALLIMENTO! Il problema non è risolvibile");
+				System.exit(1);
+				
+			}
+			else{
+				
+				nodo.add_valori_scartati_vincolo();
+				
+				nodo.ripristina_val_vincolo();
+				
+				nodo.azzera_val_scartati();
+				
+				nodo.domCella();
+			}
+			
+			
 		}
-		else {
-			nodo.add_valori_scartati_vincolo();
-			nodo.ripristina_val_vincolo();
-			nodo.azzera_val_scartati();
-			nodo.domCella();
+		
+	public static void backtraking(){
+			
+	
+				risali();
+				
+				while(!nodo.assegno_val_maggiore()) {
+					
+					System.out.println("!!!");
+					
+					risali();
+					nodo.add_num_celle();
+					
+					System.out.println("CORDINATE "+ nodo.get_cord_x()+" "+ nodo.get_cord_y());
+					System.out.println("FFF");
+				}
+				
+				System.out.println("££££££££££££££££££££££££££££££££££££££££££££");
+				
+				nodo.riduci_n_celle();
+				
+				nodo.riduci_val_vincolo();
+				
+				nodo.riduzione_dominio();
+				
+				nodo.domCella();
+				
+				System.out.println("£££££");
+				
+				listIter.previous();
+				nodo=listIter.previous();
+				
+				
+			
+			
+			
+			
+			
+			
+			
+			
 		}
-	}
 		
-	public void backtraking(){
-		this.risali();
-		while (!nodo.assegnaValoreSuccessivo()) {
-			System.out.println("Per questo nodo ho terminato i possibili valori");
-			risali();
-			nodo.add_num_celle();
-			System.out.println("Torno indietro ad elaborare la cella di coordinate ("+ nodo.get_cord_x()+","+ nodo.get_cord_y()+")");
-		}
+	public static void forward_cheking(){
 		
-		nodo.riduci_n_celle();
-		nodo.riduci_val_vincoli();
-		nodo.riduzione_domini();
-		nodo.domCella();
-		
-		listIter.previous();
-		nodo=listIter.previous();
-	}
-		
-	public void forward_cheking(){
-			System.out.println("Inizia ForwardChecking");
-			System.out.println("Sulla cella ("+ nodo.get_cord_x()+","+ nodo.get_cord_y()+")");
+			System.out.println("INIZIA FORWARD");
 			//calcolo intersezione Dx Dy
 			nodo.domCella();
+			
+			System.out.println("CORDINATE "+ nodo.get_cord_x()+" "+ nodo.get_cord_y());
+			
+			
 			while (nodo.dominio_cella.isEmpty()){
-				System.out.println("Il dominio per la cella ("+ nodo.get_cord_x()+","+ nodo.get_cord_y()+") � vuoto");
+				System.out.println("#####");
 				//System.out.println(listIter.next());
 				backtraking();
 				System.out.println("");
-				System.out.println("Inizia ForwardChecking dopo aver eseguito Backtracking");
-				System.out.println("Cella ("+ nodo.get_cord_x()+","+ nodo.get_cord_y()+")");
+				System.out.println("INIZIA FORWARD DOPO BACKWARD");
+				
+				System.out.println("CORDINATE "+ nodo.get_cord_x()+" "+ nodo.get_cord_y());
+				
+				
 				nodo.domCella();
 			}			
 	
 			//assegno il valore piu basso del dominio
 			nodo.assegno_valore();
+			
 			//riduco il numero di celle libere nei 2 vincoli dopo assegnamento
 			nodo.riduci_n_celle();
-			//ricalcolo i vincoli
-			nodo.riduci_val_vincoli();
+			
+			//ricalcolo il vincolo
+			nodo.riduci_val_vincolo();
+			 
 			//calcolo domini nuovo vincolo
-			nodo.riduzione_domini();
+			nodo.riduzione_dominio();
+			
+			
 			
 			if(listIter.hasPrevious()){
+				
+				
 				nodo=listIter.previous();
-				System.out.println("Procedo con la cella successiva, ("+ nodo.get_cord_x()+","+ nodo.get_cord_y()+")");
+				System.out.println("CORDINATE "+ nodo.get_cord_x()+" "+ nodo.get_cord_y());
+				
 				forward_cheking();
+				
 			}
+			
+			
+			//se un dominio diventa vuoto
+		
+			
+			//SUPERFLUO
+			/*if(nodo.is_vinc_vuoto()){
+				System.out.println("!!!!!!!!!!!!!!!!!!!!!!");
+			//	backtraking();
+				//(fallimento perchè faccio backtraking istanzio valori piu grandi e di certo fallirò?)
+			}*/
+			
+			
+			
 		
 		}
 		
 	public Kakuro() {
 		celleBianche = new ArrayList<Bianca>();
 		albero = new LinkedList<Nodo>();
-		
+			
 		iniz_matrice();
 		//iniz_matrice1();
 		
-		g = new Grafica(matrice, albero, this);
-		
-		// Calcolo la priorit� per tutte le celle bianche
 		for (int i=1;i<8;i++) {
 			for (int j=1;j<8;j++) {
 				if (matrice[j][i].isWhite()){
-					if (g.radio==1 || g.radio==2) //calcolo la priorit� solo con bottone statico e dinamico
-						matrice[j][i].calcPriorita(true);
+		
+					//if (bottom==A || bottom==B) //calcolo la priorità solo con bottone statico e dinamico
+					matrice[j][i].calcPriorita(true);
+					
 					celleBianche.add( (Bianca) matrice[j][i]);
 				}
 			}
 		}
+				
+		//if (bottom==A || bottom==B) //ordino il vettore solo con bottone statico e dinamico
+		Collections.sort(celleBianche, new MyComparator());
 		
-		// Ordino il vettore PER LA PRIMA VOLTA in base alla priorit�
-		// Devo controllare le opzioni di ordinamento da interfaccia grafica
-		// radio=1 dice che il vettore va ordinato solo all'inizio
-		// radio=2 dice che il vettore va ordinato ad ogni nuova istanziazione di un valore (quindi anche all'inizio)
-		if (g.radio==1 || g.radio==2) 	
-			Collections.sort(celleBianche, new MyComparator());
-		iter = celleBianche.iterator();
+		Iterator<Bianca> iter = celleBianche.iterator();
 		
-		// Se il vettore non va ordinato o va ordinato solo all'inizio
-		// riduco tutti i domini
-		if (g.radio==0 || g.radio==1) { //senza priorita  o priorita statica
-			while(iter.hasNext()){
-				Bianca variabile = iter.next();
-				variabile.riduzione_domini();
-			}
+		
+		while(iter.hasNext()){
+			
+			Bianca variabile = iter.next();
+			variabile.riduzione_dominio();
 		}
-
+		
+		
+		/////////////////////////////////////////////////////////////////////////////
+		
+		
+		
+		
 		iter=celleBianche.iterator();
+		
+		
+		
 		albero.add(new Nodo());
 		
-		solve();
-	}
-	
-	public void solve() {
 		//fino a che ho celle bianche le estraggo e le inserisco nell'albero
+		
+		
 		//per ogni cella bianca
-		if (g.radio==0 || g.radio==1) { //senza priorita  o priorita statica
-			while (iter.hasNext()) {
-				albero.addFirst(new Nodo(iter.next()));
-				listIter = albero.listIterator();
-				nodo=listIter.next();
-				listIter.previous();
-				System.out.println("");
-				//passo sempre l'ultimo nodo dell'albero per fare forward
-				forward_cheking();
-			}	
-		}
+		
+		//if (bottom==c || bottom==A) //senza priorita  o priorita statica
+		
+		
+		/*
+		while (iter.hasNext()) {
+			albero.addFirst(new Nodo(iter.next()));
+			listIter = albero.listIterator();
+			nodo=listIter.next();
+			listIter.previous();
+			//System.out.println(nodo);
+			System.out.println("");
+			//passo sempre l'ultimo nodo dell'albero per fare forward
+			forward_cheking();
+		}	
+		*/
+		//per ogni cella bianca
+				
+		//if (bottom==B ) //priorita dinamica
+		while (iter.hasNext())
+				
+			{
+					albero.addFirst(new Nodo(iter.next()));
+					//
+					
+					
+					listIter = albero.listIterator();
+					
+					
+						nodo=listIter.next();
+						listIter.previous();
+						
+						//System.out.println(nodo);
+					
+					System.out.println("");
+					//passo sempre l'ultimo nodo dell'albero per fare forward
+					forward_cheking();
+					
+					
+					iter.remove();
+					System.out.println("!!!!!!!!!!!!!!!!1");
+					while (iter.hasNext()){
 
-		// Riordino la lista delle celle ancora da elaborare
-		// (solo se � stato impostato da UI, quindi radio==2)
-		if (g.radio==2) {
-			while (iter.hasNext()) {
-				albero.addFirst(new Nodo(iter.next()));
-				listIter = albero.listIterator();
-				nodo=listIter.next();
-				listIter.previous();
-				System.out.println("");
-				//passo sempre l'ultimo nodo dell'albero per fare forward
-				forward_cheking();
-				iter.remove();
-				System.out.println("!!!!!!!!!!!!!!!!1");
-				while (iter.hasNext()){
-					System.out.println("!!!!!!!!!!!!!!!!2");
-					Bianca cella=iter.next();
-					cella.calcPriorita(false);
+						System.out.println("!!!!!!!!!!!!!!!!2");
+						Bianca cella=iter.next();
+						cella.calcPriorita(false);
+					}
+					Collections.sort(celleBianche, new MyComparator());
+					iter=celleBianche.iterator();
+					
 				}
-				Collections.sort(celleBianche, new MyComparator());
-				iter=celleBianche.iterator();
-			}
-		}
-
+		
+		
+		
 		listIter = albero.listIterator();
 		while (listIter.hasNext()) {	
 		nodo=listIter.next();
@@ -271,9 +377,9 @@ public class Kakuro {
 				System.out.println("VALORE "+nodo.getValoreCella());
 				System.out.println("");
 			}
-		}
+		}	
 		
-		g = new Grafica(matrice, albero, this);
+		Grafica g = new Grafica(matrice, albero);
 		g.repaint();
 	}
 	
